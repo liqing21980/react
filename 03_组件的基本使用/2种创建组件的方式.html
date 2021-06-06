@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2种创建组件的方式</title>
+    <script type='text/javascript' src='../js/react.development.js'></script>
+    <script type='text/javascript' src='../js/react-dom.development.js'></script>
+    <script type='text/javascript' src='../js/babel.min.js'></script>
+</head>
+<body>
+    <script type="text/babel">
+    //第一种定义组件的方式：使用工厂函数
+    function Mycomponent(){
+        console.log(this);//工厂函数中的this是undefined
+        return (
+            <div>
+        <h3>我是工厂函数创建的组件(简单组件)</h3>
+        <Mycomp/>
+        </div>
+        )
+    }
+    ReactDOM.render(<Mycomponent/>,document.getElementById('simple'));
+    // 如果渲染标签时，首字母为小写，尝试着寻找html与之对应的标签进行渲染，如果未找到则报错
+    //如果渲染时，首字母是大写，尝试这寻找组件是否定义
+    function Mycomp(){
+        return <h3>我是工厂函数创建的嵌套组件(简单组件)，即：无状态</h3>
+    }
+    class Mycomponent2 extends React.Component{
+        
+    //class Mycomponent2    extends React.Component{
+         constructor(a){
+            super(a)
+        } 
+        render(){
+            console.log(this);//类组件中render方法里this是组件类的实例对象
+            return(<h3>我是ES6类组件(复杂组件)，即：状态</h3>);
+        }
+    }
+    //下面这行代码做了这些事情：1寻找Mycomponent2是否定义，2若定义，调用与组件标签同名的类组件(工厂函数)，返回值渲染
+    ReactDOM.render(<Mycomponent2/>,document.getElementById('complex'));
+    </script>
+<div id='simple'></div>
+<div id='complex'></div>
+</body>
+</html>
+<!-- 
+jsx:
+1.<标签> {js表达式}  组件名必须首字母大写
+2.标签必须闭合
+3.className
+4.必须只有一个根标签
+
+ -->
